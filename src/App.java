@@ -1,32 +1,57 @@
 public class App {
     public static void main(String[] args) throws Exception {
 
-        VolunteerLog log1 = new VolunteerLog("2024-09-01", 3.5, "Food Bank", "Ms. Smith");
-        VolunteerLog log2 = new VolunteerLog("2024-09-08", 2.0, "Animal Shelter", "Mr. Lee");
-        VolunteerLog log3 = new VolunteerLog("2024-09-15", 4.0, "Food Bank", "Ms. Smith");
+        VolunteerManager manager = new VolunteerManager("Alex");
 
-        // Zero hours — is this valid?
-        VolunteerLog log4 = new VolunteerLog("2024-09-20", 0.0, "Library", "Mr. Jones");
+        // add some logs across two different months
+        manager.addLog(new VolunteerLog("2024-09-01", 3.5, "Food Bank", "Ms. Smith"));
+        manager.addLog(new VolunteerLog("2024-09-08", 2.0, "Animal Shelter", "Mr. Lee"));
+        manager.addLog(new VolunteerLog("2024-09-15", 4.0, "Food Bank", "Ms. Smith"));
+        manager.addLog(new VolunteerLog("2024-10-05", 2.0, "Library", "Mr. Jones"));
 
-        // Very large hours — what if someone enters 100?
-        VolunteerLog log5 = new VolunteerLog("2024-09-21", 100.0, "Hospital", "Dr. Reed");
+        // test displayAllLogs()
+        System.out.println("=== All Logs ===");
+        manager.displayAllLogs();
 
-        // Empty string organization — what prints?
-        VolunteerLog log6 = new VolunteerLog("2024-09-22", 2.0, "", "Ms. Smith");
+        // test getLogCount()
+        System.out.println("\n=== Log Count ===");
+        System.out.println("Number of logs: " + manager.getLogCount());
+        // should print 4
 
-        System.out.println(log1);
-        System.out.println(log2);
-        System.out.println(log3);
-        System.out.println(log4);
-        System.out.println(log5);
-        System.out.println(log6);
+        // test getTotalHours()
+        System.out.println("\n=== Total Hours ===");
+        System.out.println("Total hours: " + manager.getTotalHours());
+        // should print 11.5
 
-        System.out.println("Hours from log1: " + log1.getHours());
-        System.out.println("Org from log1: " + log1.getOrganization());
+        // test getAvgHoursPerMonth()
+        System.out.println("\n=== Average Hours Per Month ===");
+        System.out.println("Avg per month: " + manager.getAvgHoursPerMonth());
+        // 2 unique months → 11.5 / 2 = 5.75
 
-        double manualTotal = log1.getHours() + log2.getHours() + log3.getHours();
-        System.out.println("Total hours (manual): " + manualTotal);
-        // Should print 9.5
+        // test filterByOrg() normal case
+        System.out.println("\n=== Filter: Food Bank ===");
+        manager.filterByOrg("Food Bank");
+        // should print log1 and log3 only
+
+        // test filterByOrg() case insensitive
+        System.out.println("\n=== Filter: food bank ===");
+        manager.filterByOrg("food bank");
+        // should still print log1 and log3 if using equalsIgnoreCase
+
+        // test filterByOrg() no match
+        System.out.println("\n=== Filter: Hospital ===");
+        manager.filterByOrg("Hospital");
+        // should print nothing
+
+        // test getAvgHoursPerMonth() with empty manager
+        System.out.println("\n=== Edge Case: Empty Manager ===");
+        VolunteerManager emptyManager = new VolunteerManager("Empty");
+        System.out.println("Avg hours (empty): " + emptyManager.getAvgHoursPerMonth());
+        // should print 0.0 not crash
+
+        // test getLogCount() on empty manager
+        System.out.println("Log count (empty): " + emptyManager.getLogCount());
+        // should print 0
 
 
     }
