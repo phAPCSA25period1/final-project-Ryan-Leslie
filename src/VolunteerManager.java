@@ -16,6 +16,7 @@ public class VolunteerManager {
     }
 
     public void displayAllLogs(){
+        System.out.println(userName + "'s Volunteer Logs (" + getLogCount() + " entries):");
         for(int i = 0; i < logs.size(); i++){
             System.out.println(logs.get(i));
         }
@@ -108,6 +109,40 @@ public class VolunteerManager {
         return (getTotalHours() / targetHours) * 100;
     }
 
+    public ArrayList<String> getOrgList(){
+        ArrayList<String> orgs = new ArrayList<String>();
+        for(int i = 0; i < logs.size(); i++){
+            String org = logs.get(i).getOrganization();
+            if(!orgs.contains(org)){
+                orgs.add(org);
+            }
+        }
+        return orgs;
+    }
 
+    public double getTotalHoursByOrg(String org){
+        double total = 0;
+        for(int i = 0; i < logs.size(); i++){
+            if(logs.get(i).getOrganization().equalsIgnoreCase(org)){
+                total += logs.get(i).getHours();
+            }
+        }
+        return total;
+    }
+
+    public VolunteerLog getMostRecentLog(){
+
+        if(logs.size() == 0){
+            return null;
+        }
+
+        VolunteerLog mostRecent = logs.get(0);
+        for(int i = 0; i < logs.size(); i++){
+            if(logs.get(i).getDate().compareTo(mostRecent.getDate()) > 0){
+                mostRecent = logs.get(i);
+            }
+        }
+        return mostRecent;
+    }
 
 }
