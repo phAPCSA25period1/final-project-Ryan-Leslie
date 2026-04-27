@@ -115,6 +115,36 @@ public class App {
         System.out.println("Most recent bad date: " + badManager.getMostRecentLog());
         // should still return the log object, just with a bad date string
 
+        // ── getMonthlySummary() ──────────────────────────────
+        System.out.println("\n=== Monthly Summary (2D Array) ===");
+        String[][] summary = manager.getMonthlySummary();
+        for (int i = 0; i < summary.length; i++) {
+            System.out.println("Month: " + summary[i][0] + " | Hours: " + summary[i][1]);
+        }
+        // should print 4 rows:
+        // Month: 2024-09 | Hours: 9.5
+        // Month: 2024-10 | Hours: 2.0
+        // Month: 2024-11 | Hours: 1.5
+        // Month: 2025-09 | Hours: 2.5
+
+        // confirm 2D array dimensions
+        System.out.println("Rows: " + summary.length);
+        // should print 4
+        System.out.println("Columns: " + summary[0].length);
+        // should print 2
+
+        // test getMonthlySummary() on empty manager
+        System.out.println("\n=== Monthly Summary: Empty Manager ===");
+        String[][] emptySum = emptyManager.getMonthlySummary();
+        System.out.println("Rows (empty): " + emptySum.length);
+        // should print 0, no crash
+
+        // test getMonthlySummary() with bad date
+        System.out.println("\n=== Monthly Summary: Bad Date ===");
+        String[][] badSum = badManager.getMonthlySummary();
+        System.out.println("Rows (bad date): " + badSum.length);
+        // should print 0 since no valid dates exist, no crash
+
         System.out.println("\n========================================");
         System.out.println("           ALL TESTS COMPLETE");
         System.out.println("========================================");

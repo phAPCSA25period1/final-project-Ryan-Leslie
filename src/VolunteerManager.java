@@ -145,4 +145,44 @@ public class VolunteerManager {
         return mostRecent;
     }
 
+    public String[][] getMonthlySummary() {
+        if (logs.size() == 0){
+            return new String[0][0];
+        }
+
+        ArrayList<String> months = new ArrayList<String>();
+        for (int i = 0; i < logs.size(); i++){
+            if (logs.get(i).getDate().length() >= 7){
+                String month = logs.get(i).getDate().substring(0, 7);
+                if (!months.contains(month)){
+                    months.add(month);
+                }
+            }
+        }
+
+        String[][] summary = new String[months.size()][2];
+
+        for (int i = 0; i < months.size(); i++){
+            String month = months.get(i);
+            double total = 0;
+
+            for (int j = 0; j < logs.size(); j++){
+                if (logs.get(j).getDate().length() >= 7) {
+                    if(logs.get(j).getDate().substring(0, 7).equals(month)){
+                        total += logs.get(j).getHours();
+                    }
+                }
+            }
+
+            summary[i][0] = month;
+            summary[i][1] = String.valueOf(total);
+        }
+
+        return summary;
+
+    }
+
+
+
+
 }
