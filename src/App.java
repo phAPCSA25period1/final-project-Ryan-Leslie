@@ -1,152 +1,110 @@
-import java.util.ArrayList;
+import java.util.Scanner;
 
+/**
+ * Main entry point for the Volunteer Hour Tracker application.
+ * Provides a menu-driven interface for managing volunteer logs.
+ *
+ * @author Ryan Leslie
+ * @version 1.0
+ */
 public class App {
+
+    /**
+     * Runs the main menu loop for the Volunteer Tracker.
+     * Allows the user to add logs, view stats, filter by org,
+     * sort by date, and track progress toward a goal.
+     *
+     * @param args command line arguments (not used)
+     */
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
 
-        System.out.println("========================================");
-        System.out.println("   VOLUNTEER TRACKER - FULL TEST SUITE");
-        System.out.println("========================================");
+        System.out.print("Enter your name: ");
+        String name = scanner.nextLine();
+        VolunteerManager manager = new VolunteerManager(name);
 
-        VolunteerManager manager = new VolunteerManager("Ryan");
+        boolean running = true;
+        while (running) {
+            System.out.println("\n========================================");
+            System.out.println("         VOLUNTEER TRACKER MENU");
+            System.out.println("========================================");
+            System.out.println("1. Add a log");
+            System.out.println("2. View all logs");
+            System.out.println("3. View stats");
+            System.out.println("4. Filter by org");
+            System.out.println("5. Sort logs by date");
+            System.out.println("6. View monthly summary");
+            System.out.println("7. Quit");
+            System.out.print("Choose an option: ");
 
-        // add logs across three months and multiple orgs
-        manager.addLog(new VolunteerLog("2024-11-12", 1.5, "Hospital", "Dr. Reed"));
-        manager.addLog(new VolunteerLog("2024-09-08", 2.0, "Animal Shelter", "Mr. Lee"));
-        manager.addLog(new VolunteerLog("2024-10-05", 2.0, "Library", "Mr. Jones"));
-        manager.addLog(new VolunteerLog("2024-09-01", 3.5, "Food Bank", "Ms. Smith"));
-        manager.addLog(new VolunteerLog("2024-09-15", 4.0, "Food Bank", "Ms. Smith"));
-        manager.addLog(new VolunteerLog("2025-09-10", 2.5, "Food Bank", "Ms. Smith"));
+            String choice = scanner.nextLine();
 
-        // ── displayAllLogs() ─────────────────────────────
-        System.out.println("\n=== All Logs (unsorted) ===");
-        manager.displayAllLogs();
+            if (choice.equals("1")) {
+                System.out.print("Enter date (YYYY-MM-DD): ");
+                String date = scanner.nextLine();
 
-        // ── sortByDate() ─────────────────────────────────
-        System.out.println("\n=== All Logs (sorted by date) ===");
-        manager.sortByDate();
-        manager.displayAllLogs();
-        // should print: Sep 1, Sep 8, Sep 15, Oct 5, Nov 12, Sep 2025
+                System.out.print("Enter hours: ");
+                double hours = Double.parseDouble(scanner.nextLine());
 
-        // ── getLogCount() ────────────────────────────────
-        System.out.println("\n=== Log Count ===");
-        System.out.println("Number of logs: " + manager.getLogCount());
-        // should print 6
+                System.out.print("Enter organization: ");
+                String org = scanner.nextLine();
 
-        // ── getTotalHours() ──────────────────────────────
-        System.out.println("\n=== Total Hours ===");
-        System.out.println("Total hours: " + manager.getTotalHours());
-        // should print 15.5
+                System.out.print("Enter supervisor: ");
+                String supervisor = scanner.nextLine();
 
-        // ── getAvgHoursPerMonth() ────────────────────────
-        System.out.println("\n=== Average Hours Per Month ===");
-        System.out.println("Avg per month: " + manager.getAvgHoursPerMonth());
-        // 4 unique year-months → 15.5 / 4 = 3.875
-        // confirms multi-year fix (2024-09 and 2025-09 are separate)
+                manager.addLog(new VolunteerLog(date, hours, org, supervisor));
+                System.out.println("Log added successfully!");
+            }
+            else if (choice.equals("2")) {
+                // view all logs
+                manager.displayAllLogs();
+            }
+            else if (choice.equals("3")) {
+                // view stats
+                System.out.println("\n=== Your Stats ===");
+                System.out.println("Total logs:        " + manager.getLogCount());
+                System.out.println("Total hours:       " + manager.getTotalHours());
+                System.out.println("Avg hours/month:   " + manager.getAvgHoursPerMonth());
+                System.out.println("Top organization:  " + manager.getTopOrg());
+                System.out.println("Percent to 100hrs: " + manager.getPercentToGoal(100) + "%");
+                if (manager.getMostRecentLog() != null) {
+                    System.out.println("Most recent log:   " + manager.getMostRecentLog());
+                }
+            }
+            else if (choice.equals("4")) {
+                // filter by org
+                System.out.print("Enter organization name: ");
+                String org = scanner.nextLine();
+                manager.filterByOrg(org);
+            }
+            else if (choice.equals("5")) {
+                // sort by date
+                manager.sortByDate();
+                System.out.println("Logs sorted by date.");
+                manager.displayAllLogs();
 
-        // ── filterByOrg() ────────────────────────────────
-        System.out.println("\n=== Filter: Food Bank ===");
-        manager.filterByOrg("Food Bank");
-        // should print 3 logs
-
-        System.out.println("\n=== Filter: food bank (lowercase) ===");
-        manager.filterByOrg("food bank");
-        // should still print 3 logs — equalsIgnoreCase check
-
-        System.out.println("\n=== Filter: No Match ===");
-        manager.filterByOrg("NASA");
-        // should print nothing, no crash
-
-        // ── getTopOrg() ──────────────────────────────────
-        System.out.println("\n=== Top Organization ===");
-        System.out.println("Top org: " + manager.getTopOrg());
-        // Food Bank has 10.0 hours total, should win
-
-        // ── getTotalHoursByOrg() ─────────────────────────
-        System.out.println("\n=== Total Hours By Org ===");
-        System.out.println("Food Bank: " + manager.getTotalHoursByOrg("Food Bank"));
-        // should print 10.0
-        System.out.println("Animal Shelter: " + manager.getTotalHoursByOrg("Animal Shelter"));
-        // should print 2.0
-        System.out.println("NASA (none): " + manager.getTotalHoursByOrg("NASA"));
-        // should print 0.0
-
-        // ── getOrgList() ─────────────────────────────────
-        System.out.println("\n=== Org List ===");
-        ArrayList<String> orgs = manager.getOrgList();
-        for (int i = 0; i < orgs.size(); i++) {
-            System.out.println(orgs.get(i));
+            }
+            else if (choice.equals("6")) {
+                // monthly summary
+                String[][] summary = manager.getMonthlySummary();
+                if (summary.length == 0) {
+                    System.out.println("No logs to summarize.");
+                } else {
+                    System.out.println("\n=== Monthly Summary ===");
+                    for (int i = 0; i < summary.length; i++) {
+                        System.out.println("Month: " + summary[i][0] + " | Hours: " + summary[i][1]);
+                    }
+                }
+            }
+            else if (choice.equals("7")) {
+                running = false;
+                System.out.println("Goodbye!");
+            }
+            else {
+                System.out.println("Invalid option, try again.");
+            }
         }
-        // should print 4 unique orgs, no duplicates
-
-        // ── getMostRecentLog() ───────────────────────────
-        System.out.println("\n=== Most Recent Log ===");
-        System.out.println(manager.getMostRecentLog());
-        // should print the 2025-09-10 Food Bank log
-
-        // ── getPercentToGoal() ───────────────────────────
-        System.out.println("\n=== Percent to Goal ===");
-        System.out.println("Percent to 100hr goal: " + manager.getPercentToGoal(100) + "%");
-        // should print 15.5%
-        System.out.println("Percent to 50hr goal:  " + manager.getPercentToGoal(50) + "%");
-        // should print 31.0%
-
-        // ── edge cases ───────────────────────────────────
-        System.out.println("\n=== Edge Cases: Empty Manager ===");
-        VolunteerManager emptyManager = new VolunteerManager("Empty");
-        System.out.println("Avg hours: " + emptyManager.getAvgHoursPerMonth());
-        // should print 0.0
-        System.out.println("Log count: " + emptyManager.getLogCount());
-        // should print 0
-        System.out.println("Total hours: " + emptyManager.getTotalHours());
-        // should print 0.0
-        System.out.println("Top org: " + emptyManager.getTopOrg());
-        // should print empty string
-        System.out.println("Most recent: " + emptyManager.getMostRecentLog());
-        // should print null, no crash
-        System.out.println("Org list size: " + emptyManager.getOrgList().size());
-        // should print 0
-
-        // ── bad date input ───────────────────────────────
-        System.out.println("\n=== Edge Cases: Bad Date ===");
-        VolunteerManager badManager = new VolunteerManager("Bad");
-        badManager.addLog(new VolunteerLog("BAD", 2.0, "Food Bank", "Ms. Smith"));
-        System.out.println("Avg with bad date: " + badManager.getAvgHoursPerMonth());
-        // should print 0.0, no crash
-        System.out.println("Most recent bad date: " + badManager.getMostRecentLog());
-        // should still return the log object, just with a bad date string
-
-        // ── getMonthlySummary() ──────────────────────────────
-        System.out.println("\n=== Monthly Summary (2D Array) ===");
-        String[][] summary = manager.getMonthlySummary();
-        for (int i = 0; i < summary.length; i++) {
-            System.out.println("Month: " + summary[i][0] + " | Hours: " + summary[i][1]);
-        }
-        // should print 4 rows:
-        // Month: 2024-09 | Hours: 9.5
-        // Month: 2024-10 | Hours: 2.0
-        // Month: 2024-11 | Hours: 1.5
-        // Month: 2025-09 | Hours: 2.5
-
-        // confirm 2D array dimensions
-        System.out.println("Rows: " + summary.length);
-        // should print 4
-        System.out.println("Columns: " + summary[0].length);
-        // should print 2
-
-        // test getMonthlySummary() on empty manager
-        System.out.println("\n=== Monthly Summary: Empty Manager ===");
-        String[][] emptySum = emptyManager.getMonthlySummary();
-        System.out.println("Rows (empty): " + emptySum.length);
-        // should print 0, no crash
-
-        // test getMonthlySummary() with bad date
-        System.out.println("\n=== Monthly Summary: Bad Date ===");
-        String[][] badSum = badManager.getMonthlySummary();
-        System.out.println("Rows (bad date): " + badSum.length);
-        // should print 0 since no valid dates exist, no crash
-
-        System.out.println("\n========================================");
-        System.out.println("           ALL TESTS COMPLETE");
-        System.out.println("========================================");
+        scanner.close();
     }
+
 }
