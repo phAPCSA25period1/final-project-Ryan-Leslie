@@ -23,6 +23,40 @@ public class App {
         String name = scanner.nextLine();
         VolunteerManager manager = new VolunteerManager(name);
 
+        double targetHours = 0;
+        boolean validTarget = false;
+        while (!validTarget) {
+            System.out.print("Enter your hour goal: ");
+            try {
+                targetHours = Double.parseDouble(scanner.nextLine());
+                if (targetHours <= 0) {
+                    System.out.println("Goal must be greater than 0, try again.");
+                } else {
+                    validTarget = true;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input, please enter a number.");
+            }
+        }
+
+        int weeksToDeadline = 0;
+        boolean validWeeks = false;
+        while (!validWeeks) {
+            System.out.print("Enter weeks until deadline: ");
+            try {
+                weeksToDeadline = Integer.parseInt(scanner.nextLine());
+                if (weeksToDeadline < 0) {
+                    System.out.println("Weeks cannot be negative, try again.");
+                } else {
+                    validWeeks = true;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input, please enter a whole number.");
+            }
+        }
+
+        GoalTracker goalTracker = new GoalTracker(targetHours, weeksToDeadline);
+
         boolean running = true;
         while (running) {
             System.out.println("\n========================================");
@@ -43,8 +77,21 @@ public class App {
                 System.out.print("Enter date (YYYY-MM-DD): ");
                 String date = scanner.nextLine();
 
-                System.out.print("Enter hours: ");
-                double hours = Double.parseDouble(scanner.nextLine());
+                double hours = 0;
+                boolean validHours = false;
+                while (!validHours) {
+                    System.out.print("Enter hours: ");
+                    try {
+                        hours = Double.parseDouble(scanner.nextLine());
+                        if (hours < 0) {
+                            System.out.println("Hours cannot be negative, try again.");
+                        } else {
+                            validHours = true;
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid input, please enter a number.");
+                    }
+                }
 
                 System.out.print("Enter organization: ");
                 String org = scanner.nextLine();
@@ -69,6 +116,16 @@ public class App {
                 System.out.println("Percent to 100hrs: " + manager.getPercentToGoal(100) + "%");
                 if (manager.getMostRecentLog() != null) {
                     System.out.println("Most recent log:   " + manager.getMostRecentLog());
+                }
+                System.out.println("\n=== Goal Progress ===");
+                System.out.println("Target hours:     " + targetHours);
+                System.out.println("Hours remaining:  " + goalTracker.getHoursRemaining(manager.getTotalHours()));
+                System.out.println("Required rate:    " + goalTracker.calcRequiredRate(manager.getTotalHours()) + " hrs/week");
+                if (goalTracker.isGoalReached(manager.getTotalHours())) {
+                    System.out.println("Goal reached!");
+                }
+                else {
+                    System.out.println("Keep going!");
                 }
             }
             else if (choice.equals("4")) {
