@@ -74,8 +74,17 @@ public class App {
             String choice = scanner.nextLine();
 
             if (choice.equals("1")) {
-                System.out.print("Enter date (YYYY-MM-DD): ");
-                String date = scanner.nextLine();
+                boolean validDate = false;
+                String date = "";
+                while (!validDate) {
+                    System.out.print("Enter date (YYYY-MM-DD): ");
+                    date = scanner.nextLine();
+                    if (date.length() == 10 && date.charAt(4) == '-' && date.charAt(7) == '-') {
+                        validDate = true;
+                    } else {
+                        System.out.println("Invalid date format, please use YYYY-MM-DD.");
+                    }
+                }
 
                 double hours = 0;
                 boolean validHours = false;
@@ -106,34 +115,37 @@ public class App {
                 // view all logs
                 manager.displayAllLogs();
             }
+
             else if (choice.equals("3")) {
-                // view stats
                 System.out.println("\n=== Your Stats ===");
                 System.out.println("Total logs:        " + manager.getLogCount());
                 System.out.println("Total hours:       " + manager.getTotalHours());
                 System.out.println("Avg hours/month:   " + manager.getAvgHoursPerMonth());
                 System.out.println("Top organization:  " + manager.getTopOrg());
-                System.out.println("Percent to 100hrs: " + manager.getPercentToGoal(100) + "%");
+                System.out.println("Percent to goal:   " + manager.getPercentToGoal(goalTracker.getTargetHours()) + "%");
                 if (manager.getMostRecentLog() != null) {
                     System.out.println("Most recent log:   " + manager.getMostRecentLog());
                 }
+
                 System.out.println("\n=== Goal Progress ===");
-                System.out.println("Target hours:     " + targetHours);
-                System.out.println("Hours remaining:  " + goalTracker.getHoursRemaining(manager.getTotalHours()));
-                System.out.println("Required rate:    " + goalTracker.calcRequiredRate(manager.getTotalHours()) + " hrs/week");
+                System.out.println("Target hours:      " + goalTracker.getTargetHours());
+                System.out.println("Weeks remaining:   " + goalTracker.getWeeksToDeadline());
+                System.out.println("Hours remaining:   " + goalTracker.getHoursRemaining(manager.getTotalHours()));
+                System.out.println("Required rate:     " + goalTracker.calcRequiredRate(manager.getTotalHours()) + " hrs/week");
                 if (goalTracker.isGoalReached(manager.getTotalHours())) {
-                    System.out.println("Goal reached!");
-                }
-                else {
-                    System.out.println("Keep going!");
+                    System.out.println("Goal reached! Great work!");
+                } else {
+                    System.out.println("Keep going, you got this!");
                 }
             }
+
             else if (choice.equals("4")) {
                 // filter by org
                 System.out.print("Enter organization name: ");
                 String org = scanner.nextLine();
                 manager.filterByOrg(org);
             }
+            
             else if (choice.equals("5")) {
                 // sort by date
                 manager.sortByDate();
@@ -141,6 +153,7 @@ public class App {
                 manager.displayAllLogs();
 
             }
+
             else if (choice.equals("6")) {
                 // monthly summary
                 String[][] summary = manager.getMonthlySummary();
@@ -153,9 +166,15 @@ public class App {
                     }
                 }
             }
+
             else if (choice.equals("7")) {
                 running = false;
                 System.out.println("Goodbye!");
+            }
+            else if (choice.equals("7")) {
+            manager.saveToFile("logs.txt");
+            running = false;
+            System.out.println("Goodbye!");
             }
             else {
                 System.out.println("Invalid option, try again.");

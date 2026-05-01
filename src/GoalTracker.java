@@ -35,6 +35,24 @@ public class GoalTracker {
     }
 
     /**
+     * Returns the target hour goal.
+     *
+     * @return the target hours as a double
+     */
+    public double getTargetHours() {
+        return targetHours;
+    }
+
+    /**
+     * Returns the number of weeks until the deadline.
+     *
+     * @return weeks to deadline as an int
+     */
+    public int getWeeksToDeadline() {
+        return weeksToDeadline;
+    }
+
+    /**
      * Determines whether the volunteer has reached their target hour goal.
      *
      * @param currentHours the number of hours volunteered so far

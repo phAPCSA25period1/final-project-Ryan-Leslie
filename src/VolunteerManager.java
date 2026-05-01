@@ -1,4 +1,6 @@
+import java.io.FileWriter;
 import java.util.ArrayList;
+
 
 /**
  * Manages a collection of VolunteerLog entries for a single user.
@@ -266,7 +268,33 @@ public class VolunteerManager {
         }
 
         return summary;
-        
+
     }
+
+    /**
+     * Saves all volunteer logs to a text file.
+     * Each log is written as a comma separated line in the format:
+     * date,hours,organization,supervisor
+     *
+     * @param filename the name of the file to save to
+     */
+    public void saveToFile(String filename) {
+        try {
+            FileWriter writer = new FileWriter(filename);
+            for (int i = 0; i < logs.size(); i++) {
+                writer.write(logs.get(i).getDate() + "," +
+                            logs.get(i).getHours() + "," +
+                            logs.get(i).getOrganization() + "," +
+                            logs.get(i).getSupervisor() + "\n");
+            }
+            writer.close();
+            System.out.println("Logs saved successfully.");
+        } catch (Exception e) {
+            System.out.println("Error saving logs: " + e.getMessage());
+        }
+    }
+
+
+
 
 }
