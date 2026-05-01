@@ -7,7 +7,7 @@ import java.util.Scanner;
  * @author Ryan Leslie
  * @version 1.0
  */
-public class App {
+public class Main {
 
     /**
      * Runs the main menu loop for the Volunteer Tracker.
