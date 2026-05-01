@@ -19,7 +19,11 @@ public class App {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Enter your name: ");
+        System.out.println("\n========================================");
+        System.out.println("    Welcome to the Volunteer Tracker");
+        System.out.println("========================================");
+
+        System.out.print("\nEnter your name: ");
         String name = scanner.nextLine();
         VolunteerManager manager = new VolunteerManager(name);
 
@@ -145,7 +149,7 @@ public class App {
                 String org = scanner.nextLine();
                 manager.filterByOrg(org);
             }
-            
+
             else if (choice.equals("5")) {
                 // sort by date
                 manager.sortByDate();
