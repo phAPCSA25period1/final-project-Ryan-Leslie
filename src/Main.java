@@ -26,6 +26,7 @@ public class Main {
         System.out.print("\nEnter your name: ");
         String name = scanner.nextLine();
         VolunteerManager manager = new VolunteerManager(name);
+        manager.loadFromFile("logs.txt");
 
         double targetHours = 0;
         boolean validTarget = false;
@@ -176,9 +177,10 @@ public class Main {
                 System.out.println("Goodbye!");
             }
             else if (choice.equals("7")) {
-            manager.saveToFile("logs.txt");
-            running = false;
-            System.out.println("Goodbye!");
+                System.out.println("Saving data...");
+                manager.saveToFile("logs.txt");
+                running = false;
+                System.out.println("Goodbye!");
             }
             else {
                 System.out.println("Invalid option, try again.");

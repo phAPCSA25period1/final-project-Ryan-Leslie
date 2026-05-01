@@ -111,33 +111,18 @@ public class VolunteerManager {
         }
     }
 
-    /**
-     * Finds and returns the organization with the highest total volunteer hours.
-     * Returns an empty string if the log list is empty.
-     *
-     * @return the name of the top organization as a String
-     */
     public String getTopOrg() {
-        if (logs.size() == 0) {
-            return "";
-        }
+        if (logs.isEmpty()) return "None";
 
         String topOrg = "";
-        double topHours = 0;
+        double maxHours = -1.0;
+        ArrayList<String> allOrgs = getOrgList(); // Uses your existing helper!
 
-        for (int i = 0; i < logs.size(); i++) {
-            String orgName = logs.get(i).getOrganization();
-            double orgTotal = 0;
-
-            for (int j = i + 1; j < logs.size(); j++) {
-                if (logs.get(j).getOrganization().equalsIgnoreCase(orgName)) {
-                    orgTotal += logs.get(j).getHours();
-                }
-            }
-
-            if (orgTotal > topHours) {
-                topHours = orgTotal;
-                topOrg = orgName;
+        for (String org : allOrgs) {
+            double hoursForThisOrg = getTotalHoursByOrg(org); // Uses your other helper!
+            if (hoursForThisOrg > maxHours) {
+                maxHours = hoursForThisOrg;
+                topOrg = org;
             }
         }
         return topOrg;
@@ -294,5 +279,29 @@ public class VolunteerManager {
         }
     }
 
+    public void loadFromFile(String filename) {
+    try {
+        File file = new File(filename);
+        if (!file.exists()) return; // Don't do anything if file doesn't exist yet
+
+        Scanner fileScanner = new Scanner(file);
+        while (fileScanner.hasNextLine()) {
+            String line = fileScanner.nextLine();
+            String[] data = line.split(","); // Splits the CSV format
+
+            // Reconstruct the log object: date, hours, org, supervisor
+            String date = data[0];
+            double hours = Double.parseDouble(data[1]);
+            String org = data[2];
+            String superv = data[3];
+
+            addLog(new VolunteerLog(date, hours, org, superv));
+        }
+        fileScanner.close();
+        System.out.println("Previous logs loaded successfully!");
+    } catch (Exception e) {
+        System.out.println("No previous data found or error loading: " + e.getMessage());
+    }
+    }
 
 }
