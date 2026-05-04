@@ -173,10 +173,6 @@ public class Main {
             }
 
             else if (choice.equals("7")) {
-                running = false;
-                System.out.println("Goodbye!");
-            }
-            else if (choice.equals("7")) {
                 System.out.println("Saving data...");
                 manager.saveToFile("logs.txt");
                 running = false;
