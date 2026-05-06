@@ -282,28 +282,33 @@ public class VolunteerManager {
     }
 
     public void loadFromFile(String filename) {
-    try {
-        File file = new File(filename);
-        if (!file.exists()) return; // Don't do anything if file doesn't exist yet
+        try {
+            File file = new File(filename);
+            if (!file.exists()) {
+                System.out.println("Welcome! No previous logs found, starting fresh.");
+                return;
+            }
 
-        Scanner fileScanner = new Scanner(file);
-        while (fileScanner.hasNextLine()) {
-            String line = fileScanner.nextLine();
-            String[] data = line.split(","); // Splits the CSV format
-
-            // Reconstruct the log object: date, hours, org, supervisor
-            String date = data[0];
-            double hours = Double.parseDouble(data[1]);
-            String org = data[2];
-            String superv = data[3];
-
-            addLog(new VolunteerLog(date, hours, org, superv));
+            Scanner fileScanner = new Scanner(file);
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine();
+                if (line.trim().isEmpty()) {  // skip empty lines
+                    continue;
+                }
+                String[] data = line.split(",");
+                if (data.length == 4) {       // make sure line has all 4 fields
+                    String date = data[0];
+                    double hours = Double.parseDouble(data[1]);
+                    String org = data[2];
+                    String superv = data[3];
+                    addLog(new VolunteerLog(date, hours, org, superv));
+                }
+            }
+            fileScanner.close();
+            System.out.println("Previous logs loaded successfully!");
+        } catch (Exception e) {
+            System.out.println("Error loading logs: " + e.getMessage());
         }
-        fileScanner.close();
-        System.out.println("Previous logs loaded successfully!");
-    } catch (Exception e) {
-        System.out.println("No previous data found or error loading: " + e.getMessage());
-    }
     }
 
 

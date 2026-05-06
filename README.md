@@ -1,189 +1,94 @@
-[![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=23508917)
-# AP Computer Science A – Final Project
-## Software & Systems Development Capstone
+# Volunteer Hour Tracker
 
-Welcome to your **Final Project repository**.
-
-This repository will hold:
-- Your complete Java project
-- Your project journal and planning artifacts
-- Your final, working software product
-
-This is not just an assignment — it is a **capstone software project**.
+A command-line Java application for logging and tracking volunteer hours toward a personal goal.
 
 ---
 
-## 📌 Project Overview (Read Carefully)
+## Features
 
-In this project, you will:
-- Design and build a **real piece of software**
-- Solve **one real problem** for **one clearly defined user**
-- Work using **agile development**
-- Show evidence of **professional software practices**
-- Use AI responsibly as a planning and support tool
-
-You will leave this course with something you can confidently say:
-
-> “I built this software.”
+- Add volunteer log entries with date, hours, organization, and supervisor
+- View all logs with a formatted summary
+- View stats including total hours, average hours per month, and top organization
+- Filter logs by organization
+- Sort logs chronologically by date
+- View a monthly summary of hours
+- Track progress toward a personal hour goal with a weekly rate calculator
+- Automatically save and load logs from a file between sessions
 
 ---
 
-## 🔁 Required Workflow (How You Must Work)
+## Requirements
 
-### ✅ Daily GitHub Commits (Required)
-You are expected to:
-- Make **at least one meaningful commit every class day**
-- Write **descriptive commit messages** that explain:
-  - What you changed
-  - Why you changed it
-  - What goal it supports
-
-✅ Good commit messages:
-- `Sprint 1: Created Player class and tested constructor`
-- `Sprint 2: Implemented 2D map and verified movement logic`
-
-🚫 Poor commit messages:
-- `updates`
-- `stuff`
-- `final version`
-
-Your commit history is **evidence of your thinking and progress**.
+- Java 8 or higher
+- A terminal or command prompt
 
 ---
 
-## 🔁 Agile Development & Sprints
+## How to run
 
-You will complete **4 sprints**.  
-Each sprint includes:
-- Planning
-- Building
-- Testing
-- Feedback and reflection
-
-Each sprint ends with:
-- A sprint grade
-- A sprint reflection
-- Feedback exchanged with peers
-
-🚫 You may NOT complete multiple sprints at once.  
-✅ Each sprint grade is **final**.
+1. Compile all `.java` files:
+   ```
+   javac *.java
+   ```
+2. Run the application:
+   ```
+   java Main
+   ```
 
 ---
 
-## 🧪 Testing Expectations
+## Usage
 
-Testing is required every sprint.
+When you launch the app, you will be prompted to enter:
+- Your name
+- Your total hour goal
+- The number of weeks until your deadline
 
-✅ Testing may include:
-- Running the program with different inputs
-- Print‑based testing
-- Driver program testing
-- Verifying logic and edge cases
+You can then choose from the following menu options:
 
-You should be able to explain:
-- What you tested
-- How you tested it
-- What you discovered or fixed
-
----
-
-## 🗂️ Required Project Components
-
-Your final project must include:
-
-- ✅ Multiple interacting Java classes
-- ✅ Encapsulation (`private` fields, appropriate getters/setters)
-- ✅ Arrays and/or ArrayLists
-- ✅ A purposeful **2D array**
-- ✅ A working driver program (`main`)
-- ✅ A class diagram matching your final code
-- ✅ Clear documentation
-- ✅ A program that runs and works
-
-Inheritance and interfaces are optional but encouraged.
+| Option | Description |
+|--------|-------------|
+| 1 | Add a new volunteer log entry |
+| 2 | View all logs |
+| 3 | View stats and goal progress |
+| 4 | Filter logs by organization |
+| 5 | Sort logs by date |
+| 6 | View monthly summary |
+| 7 | Save and quit |
 
 ---
 
-## 🤖 Using AI (Allowed, With Responsibility)
+## Data format
 
-You may use AI to:
-- Organize ideas
-- Plan sprints
-- Debug code
-- Suggest design improvements
+Logs are saved to and loaded from `logs.txt` in the same directory as the program. Each line represents one log entry in the following format:
 
-You must:
-- Document how you used AI
-- Review and evaluate AI suggestions
-- Understand and explain your final code
+```
+YYYY-MM-DD,hours,organization,supervisor
+```
 
-AI should act like:
-> A junior developer you supervise — not something that builds the project for you.
+**Example:**
+```
+2026-04-21,3.0,Kaiser,Annie
+2026-04-14,3.0,Kaiser,Annie
+```
 
----
-
-## 📘 Project Journal
-
-All planning, work logs, testing notes, and reflections live in **your project journal**.
-
-If it happened during this project, it should be documented there.
+If no `logs.txt` file exists, the program starts fresh with no prior logs.
 
 ---
 
-## ✅ Final Submission Expectations
+## Project structure
 
-By the end of the project:
-- Your program should run reliably
-- Your technical requirements should be met
-- Your code should be readable and organized
-- Your repository should look **professional**
-
----
-
-# ✨ Final Step: README Update (Very Important)
-
-When your project is complete, you must **rewrite this README**  
-so it reflects **your software**, not the assignment.
-
-Your final README should include:
+| File | Description |
+|------|-------------|
+| `Main.java` | Entry point; handles the menu loop and user input |
+| `VolunteerLog.java` | Data class for a single log entry |
+| `VolunteerManager.java` | Manages the collection of logs; statistics, sorting, filtering, file I/O |
+| `GoalTracker.java` | Tracks progress toward a target hour goal with deadline awareness |
+| `logs.txt` | Auto-generated data file (created on first save) |
 
 ---
 
-## 🔹 Project Title
+## Author
 
-## 🔹 What This Software Does
-Explain your project in plain language.
-
-## 🔹 Who It’s For
-Describe the user and the problem being solved.
-
-## 🔹 How to Run the Program
-Clear steps so someone else can run your project.
-
-## 🔹 Technical Overview
-Brief description of:
-- Main classes
-- Key data structures
-- Program logic
-
-## 🔹 Class Diagram
-Include or link your final class diagram.
-
-## 🔹 Known Limitations / Future Improvements
-What works well, and what you would improve with more time.
-
----
-
-## 🎯 Final Reminder
-
-This repository represents **you as a developer**.
-
-Take pride in:
-- Your process
-- Your commits
-- Your code
-- Your documentation
-
-Build something real.  
-Build it thoughtfully.  
-Build it well.
+Ryan Leslie
+Version 1.0
