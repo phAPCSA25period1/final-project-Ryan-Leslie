@@ -1,7 +1,7 @@
 # Volunteer Hour Tracker
 
 A command-line Java application for logging and tracking volunteer hours toward a personal goal.
-
+![alt text](image.png)
 ---
 
 ## Features

@@ -311,7 +311,24 @@ public class VolunteerManager {
         }
     }
 
+    /**
+     * Removes a volunteer log at the specified index.
+     *
+     * @param index the index of the log to remove
+     */
+    public void removeLog(int index) {
+        logs.remove(index);
+    }
 
+    /**
+     * Returns the log at the specified index.
+     *
+     * @param index the index of the log to retrieve
+     * @return the VolunteerLog at that index
+     */
+    public VolunteerLog getLog(int index) {
+        return logs.get(index);
+    }
 
 
 }

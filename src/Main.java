@@ -73,14 +73,15 @@ public class Main {
             System.out.println("4. Filter by org");
             System.out.println("5. Sort logs by date");
             System.out.println("6. View monthly summary");
-            System.out.println("7. Quit");
+            System.out.println("7. Remove a log");
+            System.out.println("8. Quit");
             System.out.print("Choose an option: ");
 
             String choice = scanner.nextLine();
 
             if (choice.equals("1")) {
-                boolean validDate = false;
                 String date = "";
+                boolean validDate = false;
                 while (!validDate) {
                     System.out.print("Enter date (YYYY-MM-DD): ");
                     date = scanner.nextLine();
@@ -173,6 +174,30 @@ public class Main {
             }
 
             else if (choice.equals("7")) {
+            if (manager.getLogCount() == 0) {
+                System.out.println("No logs to remove.");
+            }
+            else {
+                for (int i = 0; i < manager.getLogCount(); i++) {
+                System.out.println((i + 1) + ". " + manager.getLog(i));
+                }
+                System.out.print("Enter the number of the log to remove (1-" + manager.getLogCount() + "): ");
+                try {
+                    int index = Integer.parseInt(scanner.nextLine()) - 1;
+                    if (index >= 0 && index < manager.getLogCount()) {
+                        manager.removeLog(index);
+                        System.out.println("Log removed successfully.");
+                    } else {
+                        System.out.println("Invalid number, please try again.");
+                    }
+                }
+                catch (NumberFormatException e) {
+                    System.out.println("Invalid input, please enter a number.");
+                }
+                }
+            }
+
+            else if (choice.equals("8")) {
                 System.out.println("Saving data...");
                 manager.saveToFile("logs.txt");
                 running = false;
@@ -181,6 +206,9 @@ public class Main {
             else {
                 System.out.println("Invalid option, try again.");
             }
+
+
+
         }
         scanner.close();
     }
