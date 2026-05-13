@@ -1,7 +1,67 @@
 # Volunteer Hour Tracker
 
 A command-line Java application for logging and tracking volunteer hours toward a personal goal.
-![alt text](image.png)
+---
+
+Class Diagram
+
+```mermaid
+classDiagram
+  direction TB
+
+  class Main {
+    +main(args : String[]) void
+  }
+
+  class VolunteerManager {
+    -logs : ArrayList~VolunteerLog~
+    -userName : String
+    +addLog(log : VolunteerLog) void
+    +removeLog(index : int) void
+    +getLog(index : int) VolunteerLog
+    +displayAllLogs() void
+    +getTotalHours() double
+    +getLogCount() int
+    +getAvgHoursPerMonth() double
+    +getTopOrg() String
+    +filterByOrg(org : String) void
+    +sortByDate() void
+    +getPercentToGoal(target : double) double
+    +getOrgList() ArrayList~String~
+    +getTotalHoursByOrg(org : String) double
+    +getMostRecentLog() VolunteerLog
+    +getMonthlySummary() String[][]
+    +saveToFile(filename : String) void
+    +loadFromFile(filename : String) void
+  }
+
+  class GoalTracker {
+    -targetHours : double
+    -weeksToDeadline : int
+    +getTargetHours() double
+    +getWeeksToDeadline() int
+    +getHoursRemaining(current : double) double
+    +isGoalReached(current : double) boolean
+    +calcRequiredRate(current : double) double
+  }
+
+  class VolunteerLog {
+    -date : String
+    -hours : double
+    -organization : String
+    -supervisor : String
+    +getDate() String
+    +getHours() double
+    +getOrganization() String
+    +getSupervisor() String
+    +toString() String
+  }
+
+  Main --> VolunteerManager : uses
+  Main --> GoalTracker : uses
+  VolunteerManager "1" o-- "0..*" VolunteerLog : contains
+```
+
 ---
 
 ## Features
