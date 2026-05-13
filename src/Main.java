@@ -23,10 +23,11 @@ public class Main {
         System.out.println("    Welcome to the Volunteer Tracker");
         System.out.println("========================================");
 
-        System.out.print("\nEnter your name: ");
+        System.out.print("Enter your name: ");
         String name = scanner.nextLine();
+        String filename = name.toLowerCase() + "_logs.txt";
         VolunteerManager manager = new VolunteerManager(name);
-        manager.loadFromFile("logs.txt");
+        manager.loadFromFile(filename);
 
         double targetHours = 0;
         boolean validTarget = false;
@@ -199,7 +200,9 @@ public class Main {
 
             else if (choice.equals("8")) {
                 System.out.println("Saving data...");
-                manager.saveToFile("logs.txt");
+                filename = name.toLowerCase() + "_logs.txt";
+                manager.saveToFile(filename);
+                manager.loadFromFile(filename);
                 running = false;
                 System.out.println("Goodbye!");
             }
